@@ -3,6 +3,9 @@ from enum import Enum
 from utilities.image_cell import ImageCell
 from typing import List
 from utilities.contactsheet import Contactsheet
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import utilities.constants as const
 
 
 class ContactsheetManager:
@@ -19,6 +22,14 @@ class ContactsheetManager:
         self._gap_mm = gap_mm
 
         self._canvases = []
+
+        self._init_font()
+
+    def _init_font(self):
+        pdfmetrics.registerFont(
+            TTFont(const.DIATYPE_FONT_NAME, const.DIATYPE_FONT_PATH))
+
+
 
     def create_contactsheets(self, input_dir, output_dir):
         print(f'\nCreating contactsheets...')

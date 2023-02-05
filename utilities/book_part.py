@@ -13,6 +13,13 @@ class BookPart:
         self.part_name = part_name
         self._assets_dir_name = None
         self._contactsheets_dir_name = None
+
+        self._medium_sized = []
+        self._single_page_sized = []
+        self._double_page_sized = []
+
+        self._init_special_images()
+        
         self._image_cells_list = []
 
         self._init_part_dirs()
@@ -27,6 +34,18 @@ class BookPart:
                                                page_h=const.PAGE_H,
                                                gap_mm=const.PAGE_GAP_MM
                                                )
+
+    def _init_special_images(self):
+        for fn in os.listdir(const.MEDIUM_STILLS_PATH):
+            self._medium_sized.append(fn)
+        for fn in os.listdir(const.SINGLE_PAGE_STILLS_PATH):
+            self._single_page_sized.append(fn)
+        for fn in os.listdir(const.DOUBLE_PAGE_STILLS_PATH):
+            self._double_page_sized.append(fn)
+
+        print(f'medium: {self._medium_sized}')
+        print(f'single page: {self._single_page_sized}')
+        print(f'double: {self._double_page_sized}')
 
     def _get_output_dir_name(self, output_type):
         print(f'Getting {output_type} output dir name...')
@@ -62,12 +81,30 @@ class BookPart:
         for base_fn in sorted(os.listdir(self._raw_input_dir)):
             processed_fn = self._preprocess_image(
                 input_basename=base_fn)
-            self._image_cells_list.append(ImageCell(processed_fn, cell_sizer=const.SINGLE_CELLED))
+            cell_sizer = self._get_cell_sizer(base_fn)
+            
+            self._image_cells_list.append(ImageCell(processed_fn, cell_sizer=cell_sizer))
+
+    def _get_cell_sizer(self, base_fn):
+        cell_sizer = const.SINGLE_CELLED
+        print(f'base fn: {base_fn}')
+        if base_fn in self._medium_sized:
+            print('in medium')
+            cell_sizer = const.MEDIUM_CELLED
+        elif base_fn in self._single_page_sized:
+            print('in single')
+            cell_sizer = const.SINGLE_PAGE_CELLED
+        elif base_fn in self._double_page_sized:
+            print('in double')
+            cell_sizer = const.DOUBLE_PAGE_CELLED
+        return cell_sizer
+
 
     def _init_image_cells(self):
         for fn in os.listdir(self._assets_dir_name):
             full_fn = os.path.join(self._assets_dir_name, fn)
-            self._image_cells_list.append(ImageCell(full_fn, cell_sizer=const.SINGLE_CELLED))
+            cell_sizer = self._get_cell_sizer(fn)
+            self._image_cells_list.append(ImageCell(full_fn, cell_sizer=cell_sizer))
 
 
     def create_contactsheets(self):

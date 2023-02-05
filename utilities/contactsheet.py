@@ -28,12 +28,7 @@ class Contactsheet:
 
         self.tag_height_mm = const.DEF_TAG_NUDGE
 
-        self._init_font()
-
-    def _init_font(self):
-        pdfmetrics.registerFont(
-            TTFont(const.DIATYPE_FONT_NAME, const.DIATYPE_FONT_PATH))
-
+    
     def _get_gapped_width(self):
         overall_gap_space = self._gap_mm * (self._n_cols - 1)
         overall_left_space = self._page_w - overall_gap_space
@@ -48,7 +43,7 @@ class Contactsheet:
         im_path = image_cell.get_image_path()
         image_basename = os.path.basename(im_path)
         image_tag = os.path.splitext(image_basename)[0]
-        print(f'Placing cell {image_tag}...')
+        # print(f'Placing cell {image_tag}...')
 
         x = self._get_x(self._next_col)
         y = self._get_y(self._next_row)
@@ -56,13 +51,19 @@ class Contactsheet:
         im_height = self._get_im_height(image_cell)
         im_width = self._get_im_width(image_cell)
 
-        self._draw_image(image=im_path,
-                         preserveAspectRatio=True,
-                         x=x,
-                         y=y,
-                         height=im_height,
-                         width=im_width)
+        if image_basename == '0049.png':
+            print('EBRRRRRRRRRRRRRRRRRR')
+            print(image_cell.get_sizer_type())
 
+        if not image_cell.get_sizer_type() in {const.MEDIUM_CELLED, const.SINGLE_PAGE_CELLED, const.DOUBLE_PAGE_CELLED}:
+            self._draw_image(image=im_path,
+                            preserveAspectRatio=True,
+                            x=x,
+                            y=y,
+                            height=im_height,
+                            width=im_width)
+        else:
+            print('ENTERED CLAUYSE')
 
         self._draw_tagline(tag=image_tag,
                            row=self._next_row,

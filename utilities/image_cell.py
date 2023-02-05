@@ -13,3 +13,6 @@ class ImageCell:
 
     def get_n_cols(self):
         return self._cell_sizer.n_cols
+
+    def get_sizer_type(self):
+        return self._cell_sizer
