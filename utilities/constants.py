@@ -5,8 +5,8 @@ SINGLE_CELLED = CellSizer(1, 1)
 MEDIUM_CELLED = CellSizer(4, 3)
 
 
-INPUTS_PATH = os.path.join('inputs')
-OUTPUTS_PATH = os.path.join('outputs')
+INPUTS_PATH = os.path.join('..','inputs')
+OUTPUTS_PATH = os.path.join('..','outputs')
 FIVE_SAMPLES_PATH = os.path.join(INPUTS_PATH, '005_samples')
 FIFTY_SAMPLES_PATH = os.path.join(INPUTS_PATH, '050_samples')
 

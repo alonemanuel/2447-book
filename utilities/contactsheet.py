@@ -1,6 +1,7 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm, mm, inch
 
+
 class Contactsheet:
 
     def __init__(self, contactsheet_fn, n_rows, n_cols, page_w, page_h, gap_mm) -> None:
@@ -25,20 +26,30 @@ class Contactsheet:
         print(f'Placing cell...')
         im_path = image_cell.get_image_path()
 
-        page_x = self._get_page_x(self._next_col)
-        page_y = self._get_page_y(self._next_row)
+        x = self._get_x(self._next_col)
+        y = self._get_y(self._next_row)
 
         im_height = self._get_im_height(image_cell)
         im_width = self._get_im_width(image_cell)
 
-        self._canvas.drawImage(image=im_path,
-                               preserveAspectRatio=True,
-                               x=page_x*mm,
-                               y=page_y*mm,
-                               height=im_height*mm,
-                               width=im_width*mm)
+        self._draw_image(image=im_path,
+                         preserveAspectRatio=True,
+                         x=x,
+                         y=y,
+                         height=im_height,
+                         width=im_width)
 
         self._update_next_pos()
+
+    def _draw_image(self, image, preserveAspectRatio, x, y, height, width):
+        page_x = self._get_page_x(x, width)
+        page_y = self._get_page_y(y, height)
+        self._canvas.drawImage(image=image,
+                               preserveAspectRatio=preserveAspectRatio,
+                               x=page_x*mm,
+                               y=page_y*mm,
+                               height=height*mm,
+                               width=width*mm)
 
     def _update_next_pos(self):
         self._next_col += 1
@@ -49,13 +60,18 @@ class Contactsheet:
     def is_full(self):
         return self._next_row == self._n_rows
 
-    def _get_page_x(self, col):
-        page_x = (self._cell_w * col) 
-        return page_x
+    def _get_x(self, col):
+        return (self._cell_w * col)
 
-    def _get_page_y(self, row):
-        page_y = (self._cell_h * row) 
+    def _get_y(self, row):
+        page_y = (self._cell_h * row)
         return page_y
+
+    def _get_page_x(self, x, width):
+        return self._page_w - x - width
+
+    def _get_page_y(self, y, height):
+        return self._page_h - y - height
 
     def _get_im_height(self, image_cell):
         return image_cell.get_n_rows() * self._cell_h
