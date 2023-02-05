@@ -34,3 +34,5 @@ DIATYPE_FONT_NAME = 'ABCDiatype'
 DIATYPE_FONT_PATH = os.path.join('assets','fonts','ABCDiatype-Regular-Trial.ttf')
 DEF_FONT_TAG_SIZE = 7
 DEF_TAG_GAP = 1
+
+DEF_CS_ANCHOR = 's'

@@ -92,7 +92,8 @@ class Contactsheet:
                                x=page_x,
                                y=page_y,
                                height=height*mm,
-                               width=width*mm)
+                               width=width*mm,
+                               anchor=const.DEF_CS_ANCHOR)
 
     def _update_next_pos(self):
         self._next_col += 1
