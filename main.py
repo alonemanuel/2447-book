@@ -23,7 +23,7 @@ def create_all_contactsheets():
                           cs_n_cols=const.EDGED_CS_N_COLS
                           )
 
-    # orig_part.preprocess_inputs()
+    orig_part.preprocess_inputs()
     # edged_part.preprocess_inputs()
     orig_part.create_contactsheets()
     # edged_part.create_contactsheets()

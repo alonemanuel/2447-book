@@ -42,6 +42,7 @@ class ContactsheetManager:
                     current_cs.save()
                     return
             current_cs.save()
+            page_counter += 1
 
 
     def _get_page_x(self, right_col):
