@@ -65,8 +65,13 @@ class BookPart:
             self._image_cells_list.append(ImageCell(processed_fn, cell_sizer=const.SINGLE_CELLED))
 
     def _init_image_cells(self):
-        pass
+        for fn in os.listdir(self._assets_dir_name):
+            full_fn = os.path.join(self._assets_dir_name, fn)
+            self._image_cells_list.append(ImageCell(full_fn, cell_sizer=const.SINGLE_CELLED))
+
 
     def create_contactsheets(self):
+        if not self._image_cells_list:
+            self._init_image_cells()
         self._cs_manager.create_contactsheets(input_dir=self._assets_dir_name,
                                               output_dir=self._contactsheets_dir_name)
