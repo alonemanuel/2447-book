@@ -8,6 +8,7 @@ MEDIUM_CELLED = CellSizer(4, 3)
 INPUTS_PATH = os.path.join('..','inputs')
 OUTPUTS_PATH = os.path.join('..','outputs')
 FIVE_SAMPLES_PATH = os.path.join(INPUTS_PATH, '005_samples')
+FIFTEEN_SAMPLES_PATH = os.path.join(INPUTS_PATH, '015_samples')
 FIFTY_SAMPLES_PATH = os.path.join(INPUTS_PATH, '050_samples')
 
 ASSETS_TYPE = 'assets'
@@ -16,7 +17,8 @@ CONTACTSHEETS_TYPE = 'contactsheets'
 ORIG_PART_NAME = 'orig'
 EDGED_PART_NAME = 'edged'
 
-DEF_SIGMA = 0.33
+DEF_SIGMA = 0.33 # Lower sigma - less details
+HIGH_SIGMA = 0.66
 
 
 ORIG_CS_N_ROWS = 9

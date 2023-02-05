@@ -17,7 +17,7 @@ class EdgedPreprocessor(Preprocessor):
 
         img = self._get_image(input_fn)
         edged = self._get_edged_image(image=img,
-                                      sigma=const.DEF_SIGMA)
+                                      sigma=999)
 
         cv2.imwrite(filename=output_fn, img=edged)
         return output_fn

@@ -16,17 +16,19 @@ def create_all_contactsheets():
                          cs_n_rows=const.ORIG_CS_N_ROWS,
                          cs_n_cols=const.ORIG_CS_N_COLS
                          )
-    edged_part = BookPart(raw_input_dir=const.FIFTY_SAMPLES_PATH,
+    edged_part = BookPart(raw_input_dir=const.FIFTEEN_SAMPLES_PATH,
                           part_name=const.EDGED_PART_NAME,
                           preprocessor_class=edged_preprocessor.EdgedPreprocessor,
                           cs_n_rows=const.EDGED_CS_N_ROWS,
                           cs_n_cols=const.EDGED_CS_N_COLS
                           )
 
-    for book_part in [orig_part]:
-        print('\n\n\n')
-        # book_part.preprocess_inputs()
-        book_part.create_contactsheets()
+    # orig_part.preprocess_inputs()
+    # edged_part.preprocess_inputs()
+    # orig_part.create_contactsheets()
+    edged_part.create_contactsheets()
+    # for book_part in [orig_part, edged_part]:
+    #     print('\n\n\n')
 
 
 if __name__ == '__main__':

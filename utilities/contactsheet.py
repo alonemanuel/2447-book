@@ -16,11 +16,21 @@ class Contactsheet:
         self._n_cols = n_cols
         self._gap_mm = gap_mm
 
-        self._cell_w = self._page_w / self._n_cols
+        self._cell_w = self._get_gapped_width()
         self._cell_h = self._page_h / self._n_rows
 
         self._next_row = 0
         self._next_col = 0
+
+    def _get_gapped_width(self):
+        overall_gap_space = self._gap_mm * (self._n_cols - 1)
+        overall_left_space = self._page_w - overall_gap_space
+        return overall_left_space / self._n_cols
+
+    def _get_gapped_height(self):
+        overall_gap_space = self._gap_mm * (self._n_rows - 1)
+        overall_left_space = self._page_h - overall_gap_space
+        return overall_left_space / self._n_rows
 
     def place_cell(self, image_cell):
         print(f'Placing cell...')
@@ -61,11 +71,14 @@ class Contactsheet:
         return self._next_row == self._n_rows
 
     def _get_x(self, col):
-        return (self._cell_w * col)
+        image_offset = self._cell_w * col
+        gap_offset = self._gap_mm * col
+        return image_offset + gap_offset
 
     def _get_y(self, row):
-        page_y = (self._cell_h * row)
-        return page_y
+        image_offset = self._cell_h * row
+        gap_offset = self._gap_mm * row
+        return image_offset + gap_offset
 
     def _get_page_x(self, x, width):
         return self._page_w - x - width
@@ -77,6 +90,7 @@ class Contactsheet:
         return image_cell.get_n_rows() * self._cell_h
 
     def _get_im_width(self, image_cell):
+
         return image_cell.get_n_cols() * self._cell_w
 
     def save(self):
