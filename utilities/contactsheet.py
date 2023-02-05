@@ -1,6 +1,9 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm, mm, inch
 import os
+from reportlab.pdfbase import pdfmetrics
+from reportlab.pdfbase.ttfonts import TTFont
+import utilities.constants as const
 
 
 class Contactsheet:
@@ -24,6 +27,12 @@ class Contactsheet:
         self._next_col = 0
 
         self.tag_height_mm = 2
+
+        self._init_font()
+
+    def _init_font(self):
+        pdfmetrics.registerFont(
+            TTFont(const.DIATYPE_FONT_NAME, const.DIATYPE_FONT_PATH))
 
     def _get_gapped_width(self):
         overall_gap_space = self._gap_mm * (self._n_cols - 1)
@@ -63,14 +72,12 @@ class Contactsheet:
 
     def _draw_tagline(self, tag, row, col):
         tag_x = (self._get_x(col) + self._cell_w/2)
-        tag_y = (self._get_y(row) + self._cell_h)
+        tag_y = (self._get_y(row) + self._cell_h) + const.DEF_TAG_GAP
         page_x = self._get_page_x(tag_x, 0)
         page_y = self._get_page_y(tag_y, 0)
 
-        print(f'tag: {tag}')
         self._canvas.saveState()
-        self._canvas.setFont('Times-Bold',7)
-        print(f'tagpage x: {tag_x:.1f}, tagpage y: {page_y:.1f}')
+        self._canvas.setFont(const.DIATYPE_FONT_NAME, const.DEF_FONT_TAG_SIZE)
         self._canvas.drawCentredString(page_x, page_y, tag)
         self._canvas.restoreState()
 

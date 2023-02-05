@@ -29,3 +29,8 @@ EDGED_CS_N_COLS = 7
 PAGE_W = 152
 PAGE_H = 252
 PAGE_GAP_MM = 2
+
+DIATYPE_FONT_NAME = 'ABCDiatype' 
+DIATYPE_FONT_PATH = os.path.join('assets','fonts','ABCDiatype-Regular-Trial.ttf')
+DEF_FONT_TAG_SIZE = 7
+DEF_TAG_GAP = 1
