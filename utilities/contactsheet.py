@@ -1,5 +1,6 @@
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm, mm, inch
+import os
 
 
 class Contactsheet:
@@ -21,6 +22,8 @@ class Contactsheet:
 
         self._next_row = 0
         self._next_col = 0
+
+        self.tag_height_mm = 2
 
     def _get_gapped_width(self):
         overall_gap_space = self._gap_mm * (self._n_cols - 1)
@@ -49,15 +52,38 @@ class Contactsheet:
                          height=im_height,
                          width=im_width)
 
+        image_basename = os.path.basename(im_path)
+        image_tag = os.path.splitext(image_basename)[0]
+
+        self._draw_tagline(tag=image_tag,
+                           row=self._next_row,
+                           col=self._next_col)
+
         self._update_next_pos()
+
+    def _draw_tagline(self, tag, row, col):
+        tag_x = (self._get_x(col) + self._cell_w/2)
+        tag_y = (self._get_y(row) + self._cell_h)
+        page_x = self._get_page_x(tag_x, 0)
+        page_y = self._get_page_y(tag_y, 0)
+
+        print(f'tag: {tag}')
+        self._canvas.saveState()
+        self._canvas.setFont('Times-Bold',7)
+        print(f'tagpage x: {tag_x:.1f}, tagpage y: {page_y:.1f}')
+        self._canvas.drawCentredString(page_x, page_y, tag)
+        self._canvas.restoreState()
+
+        # textobj = self._canvas.beginText(page_x, page_y)
 
     def _draw_image(self, image, preserveAspectRatio, x, y, height, width):
         page_x = self._get_page_x(x, width)
         page_y = self._get_page_y(y, height)
+        print(f'im x: {page_x:.1f}, im y: {page_y:.1f}')
         self._canvas.drawImage(image=image,
                                preserveAspectRatio=preserveAspectRatio,
-                               x=page_x*mm,
-                               y=page_y*mm,
+                               x=page_x,
+                               y=page_y,
                                height=height*mm,
                                width=width*mm)
 
@@ -81,13 +107,13 @@ class Contactsheet:
         return image_offset + gap_offset
 
     def _get_page_x(self, x, width):
-        return self._page_w - x - width
+        return (self._page_w - x - width) * mm
 
     def _get_page_y(self, y, height):
-        return self._page_h - y - height
+        return (self._page_h - y - height)*mm
 
     def _get_im_height(self, image_cell):
-        return image_cell.get_n_rows() * self._cell_h
+        return (image_cell.get_n_rows() * self._cell_h)-self.tag_height_mm
 
     def _get_im_width(self, image_cell):
 
