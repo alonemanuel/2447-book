@@ -21,12 +21,12 @@ class Contactsheet:
         self._gap_mm = gap_mm
 
         self._cell_w = self._get_gapped_width()
-        self._cell_h = self._page_h / self._n_rows
+        self._cell_h = self._get_gapped_height()
 
         self._next_row = 0
         self._next_col = 0
 
-        self.tag_height_mm = 2
+        self.tag_height_mm = const.DEF_TAG_NUDGE
 
         self._init_font()
 
@@ -45,8 +45,10 @@ class Contactsheet:
         return overall_left_space / self._n_rows
 
     def place_cell(self, image_cell):
-        print(f'Placing cell...')
         im_path = image_cell.get_image_path()
+        image_basename = os.path.basename(im_path)
+        image_tag = os.path.splitext(image_basename)[0]
+        print(f'Placing cell {image_tag}...')
 
         x = self._get_x(self._next_col)
         y = self._get_y(self._next_row)
@@ -61,18 +63,17 @@ class Contactsheet:
                          height=im_height,
                          width=im_width)
 
-        image_basename = os.path.basename(im_path)
-        image_tag = os.path.splitext(image_basename)[0]
 
         self._draw_tagline(tag=image_tag,
                            row=self._next_row,
-                           col=self._next_col)
+                           col=self._next_col,
+                           im_height=im_height)
 
         self._update_next_pos()
 
-    def _draw_tagline(self, tag, row, col):
+    def _draw_tagline(self, tag, row, col, im_height):
         tag_x = (self._get_x(col) + self._cell_w/2)
-        tag_y = (self._get_y(row) + self._cell_h) + const.DEF_TAG_GAP
+        tag_y = (self._get_y(row) + im_height) + const.DEF_TAG_GAP
         page_x = self._get_page_x(tag_x, 0)
         page_y = self._get_page_y(tag_y, 0)
 
@@ -86,7 +87,6 @@ class Contactsheet:
     def _draw_image(self, image, preserveAspectRatio, x, y, height, width):
         page_x = self._get_page_x(x, width)
         page_y = self._get_page_y(y, height)
-        print(f'im x: {page_x:.1f}, im y: {page_y:.1f}')
         self._canvas.drawImage(image=image,
                                preserveAspectRatio=preserveAspectRatio,
                                x=page_x,
@@ -121,7 +121,7 @@ class Contactsheet:
         return (self._page_h - y - height)*mm
 
     def _get_im_height(self, image_cell):
-        return (image_cell.get_n_rows() * self._cell_h)-self.tag_height_mm
+        return (image_cell.get_n_rows() * self._cell_h) - self.tag_height_mm
 
     def _get_im_width(self, image_cell):
 

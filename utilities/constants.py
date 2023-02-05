@@ -10,6 +10,7 @@ OUTPUTS_PATH = os.path.join('..','outputs')
 FIVE_SAMPLES_PATH = os.path.join(INPUTS_PATH, '005_samples')
 FIFTEEN_SAMPLES_PATH = os.path.join(INPUTS_PATH, '015_samples')
 FIFTY_SAMPLES_PATH = os.path.join(INPUTS_PATH, '050_samples')
+HUNDRED_SAMPLES_PATH = os.path.join(INPUTS_PATH, '100_samples')
 
 ASSETS_TYPE = 'assets'
 CONTACTSHEETS_TYPE = 'contactsheets'
@@ -29,10 +30,14 @@ EDGED_CS_N_COLS = 7
 PAGE_W = 152
 PAGE_H = 252
 PAGE_GAP_MM = 2
+# PAGE_ROW_GAP = 2
+# PAGE_ROW_GAP = 2
 
 DIATYPE_FONT_NAME = 'ABCDiatype' 
 DIATYPE_FONT_PATH = os.path.join('assets','fonts','ABCDiatype-Regular-Trial.ttf')
 DEF_FONT_TAG_SIZE = 7
-DEF_TAG_GAP = 1
+DEF_TAG_GAP = 2.5
+DEF_TAG_NUDGE = 2.75
+
 
 DEF_CS_ANCHOR = 's'
