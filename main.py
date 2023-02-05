@@ -1,6 +1,6 @@
 from utilities.book_part import BookPart
 import utilities.constants as const
-from utilities.preprocessors import orig_preprocessor, edged_preprocessor
+from utilities.preprocessors import preprocessor, orig_preprocessor, edged_preprocessor
 import random
 import shutil
 import os
@@ -11,7 +11,22 @@ def main():
 
     # create_all_contactsheets()
     # create_random_sample(files_dir_path=const.ALL_STILLS_PATH, dest_folder=const.RANDOM_SAMPLE_DIR,n_samples=3)
-    utilities.utils.save_gifs_to_frames()
+    # utilities.utils.save_gifs_to_frames()
+    create_gif_contactsheets()
+
+def create_gif_contactsheets():
+    gifs_part = BookPart(raw_input_dir=const.GIFS_BATCHED_INPUT_DIR,
+                         part_name=const.GIF_PART_NAME,
+                         preprocessor_class=orig_preprocessor.OrigPreprocessor,
+                         cs_n_rows=const.GIF_CS_N_ROWS,
+                         cs_n_cols=const.GIF_CS_N_COLS,
+                         row_gap=const.DEF_GIF_ROW_GAP,
+                         col_gap=const.DEF_GIF_COL_GAP,
+                         is_batched=True
+                         )
+
+    gifs_part.create_contactsheets()
+                         
 
 def create_all_contactsheets():
     print(f'Creating all contactsheets...')

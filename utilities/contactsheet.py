@@ -8,7 +8,7 @@ import utilities.constants as const
 
 class Contactsheet:
 
-    def __init__(self, contactsheet_fn, n_rows, n_cols, page_w, page_h, gap_mm) -> None:
+    def __init__(self, contactsheet_fn, n_rows, n_cols, page_w, page_h, row_gap, col_gap) -> None:
         print('Initing contactsheet...')
         self._n_images_placed = 0
         self._page_w = page_w
@@ -18,7 +18,8 @@ class Contactsheet:
                                      pagesize=(self._page_w*mm, self._page_h*mm))
         self._n_rows = n_rows
         self._n_cols = n_cols
-        self._gap_mm = gap_mm
+        self._row_gap = row_gap
+        self._col_gap = col_gap
 
         self._cell_w = self._get_gapped_width()
         self._cell_h = self._get_gapped_height()
@@ -30,12 +31,12 @@ class Contactsheet:
 
     
     def _get_gapped_width(self):
-        overall_gap_space = self._gap_mm * (self._n_cols - 1)
+        overall_gap_space = self._col_gap * (self._n_cols - 1)
         overall_left_space = self._page_w - overall_gap_space
         return overall_left_space / self._n_cols
 
     def _get_gapped_height(self):
-        overall_gap_space = self._gap_mm * (self._n_rows - 1)
+        overall_gap_space = self._row_gap * (self._n_rows - 1)
         overall_left_space = self._page_h - overall_gap_space
         return overall_left_space / self._n_rows
 
@@ -56,6 +57,7 @@ class Contactsheet:
             print(image_cell.get_sizer_type())
 
         if not image_cell.get_sizer_type() in {const.MEDIUM_CELLED, const.SINGLE_PAGE_CELLED, const.DOUBLE_PAGE_CELLED}:
+            print(f'im path: {im_path}')
             self._draw_image(image=im_path,
                             preserveAspectRatio=True,
                             x=x,
@@ -107,12 +109,12 @@ class Contactsheet:
 
     def _get_x(self, col):
         image_offset = self._cell_w * col
-        gap_offset = self._gap_mm * col
+        gap_offset = self._col_gap * col
         return image_offset + gap_offset
 
     def _get_y(self, row):
         image_offset = self._cell_h * row
-        gap_offset = self._gap_mm * row
+        gap_offset = self._row_gap * row
         return image_offset + gap_offset
 
     def _get_page_x(self, x, width):

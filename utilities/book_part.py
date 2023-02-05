@@ -7,19 +7,25 @@ from utilities.preprocessors.preprocessor import Preprocessor
 
 
 class BookPart:
-    def __init__(self, raw_input_dir, part_name, preprocessor_class, cs_n_rows, cs_n_cols) -> None:
+    def __init__(self, raw_input_dir, part_name, preprocessor_class, cs_n_rows,
+                 cs_n_cols, row_gap, col_gap, is_batched=False) -> None:
         print(f'Initing book part: {part_name}')
         self._raw_input_dir = raw_input_dir
         self.part_name = part_name
         self._assets_dir_name = None
         self._contactsheets_dir_name = None
 
+        self._is_batched = is_batched
+
         self._medium_sized = []
         self._single_page_sized = []
         self._double_page_sized = []
 
+        self._row_gap = row_gap
+        self._col_gap = col_gap
+
         self._init_special_images()
-        
+
         self._image_cells_list = []
 
         self._init_part_dirs()
@@ -32,7 +38,8 @@ class BookPart:
                                                n_cols=cs_n_cols,
                                                page_w=const.PAGE_W,
                                                page_h=const.PAGE_H,
-                                               gap_mm=const.PAGE_GAP_MM
+                                               row_gap=self._row_gap,
+                                               col_gap=self._col_gap
                                                )
 
     def _init_special_images(self):
@@ -82,12 +89,13 @@ class BookPart:
             processed_fn = self._preprocess_image(
                 input_basename=base_fn)
             cell_sizer = self._get_cell_sizer(base_fn)
-            
-            self._image_cells_list.append(ImageCell(processed_fn, cell_sizer=cell_sizer))
+
+            self._image_cells_list.append(
+                ImageCell(processed_fn, cell_sizer=cell_sizer))
 
     def _get_cell_sizer(self, base_fn):
         cell_sizer = const.SINGLE_CELLED
-        print(f'base fn: {base_fn}')
+        # print(f'base fn: {base_fn}')
         if base_fn in self._medium_sized:
             print('in medium')
             cell_sizer = const.MEDIUM_CELLED
@@ -99,16 +107,35 @@ class BookPart:
             cell_sizer = const.DOUBLE_PAGE_CELLED
         return cell_sizer
 
-
     def _init_image_cells(self):
-        for fn in os.listdir(self._assets_dir_name):
+        for fn in sorted(os.listdir(self._assets_dir_name)):
             full_fn = os.path.join(self._assets_dir_name, fn)
             cell_sizer = self._get_cell_sizer(fn)
-            self._image_cells_list.append(ImageCell(full_fn, cell_sizer=cell_sizer))
+            self._image_cells_list.append(
+                ImageCell(full_fn, cell_sizer=cell_sizer))
 
+    def _init_batched_image_cells(self):
+        print(f'Initing batched cells...')
+        for dir in sorted(os.listdir(self._assets_dir_name)):
+            dir_path = os.path.join(self._assets_dir_name, dir)
+            if os.path.isdir(dir_path):
+                print(f'Found dir: {dir}')
+                new_list = []
+                self._image_cells_list.append(new_list)
+                for fn in sorted(os.listdir(dir_path)):
+                    fn_path = os.path.join(dir_path, fn)
+                    cell_sizer = self._get_cell_sizer(fn)
+                    new_list.append(
+                        ImageCell(fn_path, cell_sizer=cell_sizer))
+
+    def create_batched_contactsheets(self):
+        self._init_batched_image_cells()
+        self._cs_manager.create_batched_contactsheets()
 
     def create_contactsheets(self):
+        if self._is_batched:
+            self.create_batched_contactsheets()
+            return
         if not self._image_cells_list:
             self._init_image_cells()
-        self._cs_manager.create_contactsheets(input_dir=self._assets_dir_name,
-                                              output_dir=self._contactsheets_dir_name)
+        self._cs_manager.create_contactsheets()

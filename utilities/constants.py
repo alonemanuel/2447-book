@@ -19,6 +19,7 @@ CONTACTSHEETS_TYPE = 'contactsheets'
 
 ORIG_PART_NAME = 'orig'
 EDGED_PART_NAME = 'edged'
+GIF_PART_NAME = 'gif'
 
 DEF_SIGMA = 0.33  # Lower sigma - less details
 HIGH_SIGMA = 0.66
@@ -91,4 +92,9 @@ DOUBLE_PAGE_STILLS_PATH = os.path.join('..', '..', 'assets', 'double_page_stills
 
 GIFS_INPUT_DIR = os.path.join(INPUTS_PATH, 'gif_samples')
 GIFS_OUTPUT_DIR = os.path.join(OUTPUTS_PATH, 'gif_outputs')
+GIFS_BATCHED_INPUT_DIR = os.path.join(INPUTS_PATH, 'gif_batch_samples')
 N_GIFS_TO_SAVE = 5
+DEF_GIF_COL_GAP = 1
+DEF_GIF_ROW_GAP = 3
+GIF_CS_N_COLS = 5
+GIF_CS_N_ROWS = 9
