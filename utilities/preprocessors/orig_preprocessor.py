@@ -12,3 +12,4 @@ class OrigPreprocessor(Preprocessor):
         input_fn = os.path.join(self.input_dir, input_basename)
         output_fn = os.path.join(self.output_dir, input_basename)
         shutil.copy(input_fn, output_fn)
+        return output_fn

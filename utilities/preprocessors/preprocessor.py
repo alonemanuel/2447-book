@@ -12,8 +12,9 @@ class Preprocessor(ABC):
 
     @abstractmethod
     def preprocess(self, input_basename) -> Image:
-        print(
-            f'Input dir: {self.input_dir}\nOutput dir: {self.output_dir}\nBasename: {input_basename}')
+        pass
+        # print(
+        #     f'Input dir: {self.input_dir}\nOutput dir: {self.output_dir}\nBasename: {input_basename}')
 
     def get_output_fn(self):
         return os.path.join()

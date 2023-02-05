@@ -20,6 +20,7 @@ class EdgedPreprocessor(Preprocessor):
                                       sigma=const.DEF_SIGMA)
 
         cv2.imwrite(filename=output_fn, img=edged)
+        return output_fn
 
     def _get_edged_image(self, image, sigma):
         return self._auto_canny(image=image,

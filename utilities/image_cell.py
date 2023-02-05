@@ -1,5 +1,15 @@
 
 
 class ImageCell:
-    def __init__(self, image_abs_fn, type) -> None:
-        pass
+    def __init__(self, image_abs_fn, cell_sizer) -> None:
+        self._image_abs_fn = image_abs_fn
+        self._cell_sizer = cell_sizer
+
+    def get_image_path(self):
+        return self._image_abs_fn
+
+    def get_n_rows(self):
+        return self._cell_sizer.n_rows
+
+    def get_n_cols(self):
+        return self._cell_sizer.n_cols
