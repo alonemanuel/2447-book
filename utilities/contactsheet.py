@@ -42,6 +42,7 @@ class Contactsheet:
 
     def place_cell(self, image_cell):
         im_path = image_cell.get_image_path()
+        print(f'in cs impath: {im_path}')
         image_basename = os.path.basename(im_path)
         image_tag = os.path.splitext(image_basename)[0]
         # print(f'Placing cell {image_tag}...')

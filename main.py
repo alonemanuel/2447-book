@@ -1,6 +1,6 @@
 from utilities.book_part import BookPart
 import utilities.constants as const
-from utilities.preprocessors import preprocessor, orig_preprocessor, edged_preprocessor
+from utilities.preprocessors import preprocessor, meta_preprocessor, orig_preprocessor, edged_preprocessor
 import random
 import shutil
 import os
@@ -12,7 +12,23 @@ def main():
     # create_all_contactsheets()
     # create_random_sample(files_dir_path=const.ALL_STILLS_PATH, dest_folder=const.RANDOM_SAMPLE_DIR,n_samples=3)
     # utilities.utils.save_gifs_to_frames()
-    create_gif_contactsheets()
+    # create_gif_contactsheets()
+    create_meta_contactsheets()
+
+
+def create_meta_contactsheets():
+    meta_part = BookPart(raw_input_dir=const.FIVE_SAMPLES_PATH,
+                         part_name=const.META_PART_NAME,
+                         preprocessor_class=meta_preprocessor.MetaPreprocessor,
+                         cs_n_rows=const.META_CS_N_ROWS,
+                         cs_n_cols=const.META_CS_N_COLS,
+                         row_gap=const.DEF_META_ROW_GAP,
+                         col_gap=const.DEF_META_COL_GAP,
+                         is_batched=False
+                         )
+    meta_part.preprocess_inputs()
+    meta_part.create_contactsheets()
+
 
 def create_gif_contactsheets():
     gifs_part = BookPart(raw_input_dir=const.GIFS_BATCHED_INPUT_DIR,
@@ -26,7 +42,7 @@ def create_gif_contactsheets():
                          )
 
     gifs_part.create_contactsheets()
-                         
+
 
 def create_all_contactsheets():
     print(f'Creating all contactsheets...')
@@ -45,6 +61,7 @@ def create_all_contactsheets():
 
     orig_part.preprocess_inputs()
     # edged_part.preprocess_inputs()
+    
     orig_part.create_contactsheets()
     # edged_part.create_contactsheets()
     # for book_part in [orig_part, edged_part]:

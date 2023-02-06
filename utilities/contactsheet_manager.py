@@ -76,7 +76,8 @@ class ContactsheetManager:
                                       n_cols=self._n_cols,
                                       page_w=self._page_w,
                                       page_h=self._page_h,
-                                      gap_mm=self._gap_mm)
+                                      row_gap=self._row_gap_mm,
+                                      col_gap=self._col_gap_mm)
             while not current_cs.is_full():
                 current_cs.place_cell(self._image_cells_list[image_counter])
                 image_counter += 1
