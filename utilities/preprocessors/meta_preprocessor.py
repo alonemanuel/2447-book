@@ -16,11 +16,11 @@ class MetaPreprocessor(Preprocessor):
     def __init__(self, input_dir, output_dir) -> None:
         super().__init__(input_dir, output_dir)
 
-    def preprocess(self, input_basename) -> Image:
+    def preprocess(self, input_basename) :
         super().preprocess(input_basename=input_basename)
 
         self._input_fn = os.path.join(self.input_dir, input_basename)
-        self._output_fn = os.path.join(self.output_dir, input_basename)
+        self._output_fn = os.path.join(self.output_dir, self.get_output_fn())
         self._input_image = Image.open(self._input_fn)
 
         self._palette = self.extract_palette()
@@ -29,8 +29,9 @@ class MetaPreprocessor(Preprocessor):
 
         self._output_svg = MySVG(filename=self.get_output_fn())
         self._output_svg.add_colorbars(self._palette)
-
-        self.save_output()
+        if self._faces:
+            self._output_svg.add_image(self._faces[0])
+        return self.save_output()
 
     def get_output_fn(self):
         basename = os.path.basename(self._input_fn)

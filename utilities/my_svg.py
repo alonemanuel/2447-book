@@ -1,3 +1,4 @@
+import utilities.constants as const
 import svgwrite
 from svgwrite import mm, cm
 from svgwrite.mixins import ViewBox
@@ -9,10 +10,10 @@ COLORBAR_H = 10
 TEXT_PADDING = 4
 TEXT_START_Y = COLORBAR_H + TEXT_PADDING
 TEXT_DEF_FONT_SIZE = 7
-import utilities.constants as const
 
 DEF_FONT = 'ABCDiatype'
 colors = ['#202020', 'green', '#000000', 'blue', '#ffffff']
+
 
 class MySVG(svgwrite.Drawing):
     # def __init__(self, filename="noname.svg", size=..., **extra):
@@ -30,7 +31,7 @@ class MySVG(svgwrite.Drawing):
 
     def embed_fonts(self):
         self.embed_font(name=const.DIATYPE_FONT_NAME,
-                filename=const.DIATYPE_FONT_PATH)
+                        filename=const.DIATYPE_FONT_PATH)
 
     # def __init__(self, filename="noname.svg", size=..., **extra):
 
@@ -46,6 +47,11 @@ class MySVG(svgwrite.Drawing):
     def add_colorbars(self, colors):
         for color in colors:
             self.add_colorbar(color=f'rgb{color}')
+
+    def add_image(self, image, w=COLORBAR_W, h=COLORBAR_H):
+        self.add(self.image(image,
+                            insert=(self._start_offset_x*mm, 0),
+                            size = ((w*mm, h*mm))))
 
     def add_bottom_text(self, text):
 

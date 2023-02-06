@@ -11,7 +11,7 @@ class Preprocessor(ABC):
         self.output_dir = output_dir
 
     @abstractmethod
-    def preprocess(self, input_basename) -> Image:
+    def preprocess(self, input_basename):
         pass
         # print(
         #     f'Input dir: {self.input_dir}\nOutput dir: {self.output_dir}\nBasename: {input_basename}')

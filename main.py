@@ -13,7 +13,8 @@ def main():
     # create_random_sample(files_dir_path=const.ALL_STILLS_PATH, dest_folder=const.RANDOM_SAMPLE_DIR,n_samples=3)
     # utilities.utils.save_gifs_to_frames()
     # create_gif_contactsheets()
-    create_meta_contactsheets()
+    # create_meta_contactsheets()
+    create_all_contactsheets()
 
 
 def create_meta_contactsheets():
@@ -46,24 +47,26 @@ def create_gif_contactsheets():
 
 def create_all_contactsheets():
     print(f'Creating all contactsheets...')
-    orig_part = BookPart(raw_input_dir=const.ALL_STILLS_PATH,
-                         part_name=const.ORIG_PART_NAME,
-                         preprocessor_class=orig_preprocessor.OrigPreprocessor,
-                         cs_n_rows=const.ORIG_CS_N_ROWS,
-                         cs_n_cols=const.ORIG_CS_N_COLS
-                         )
-    edged_part = BookPart(raw_input_dir=const.HUNDRED_SAMPLES_PATH,
+    # orig_part = BookPart(raw_input_dir=const.ALL_STILLS_PATH,
+    #                      part_name=const.ORIG_PART_NAME,
+    #                      preprocessor_class=orig_preprocessor.OrigPreprocessor,
+    #                      cs_n_rows=const.ORIG_CS_N_ROWS,
+    #                      cs_n_cols=const.ORIG_CS_N_COLS
+    #                      )
+    edged_part = BookPart(raw_input_dir=const.ALL_STILLS_PATH,
                           part_name=const.EDGED_PART_NAME,
                           preprocessor_class=edged_preprocessor.EdgedPreprocessor,
                           cs_n_rows=const.EDGED_CS_N_ROWS,
-                          cs_n_cols=const.EDGED_CS_N_COLS
-                          )
+                          cs_n_cols=const.EDGED_CS_N_COLS,
+                          row_gap=const.DEF_GIF_ROW_GAP,
+                          col_gap=const.DEF_GIF_COL_GAP,
+                          is_batched=False)
 
-    orig_part.preprocess_inputs()
-    # edged_part.preprocess_inputs()
-    
-    orig_part.create_contactsheets()
-    # edged_part.create_contactsheets()
+    # orig_part.preprocess_inputs()
+    edged_part.preprocess_inputs()
+
+    # orig_part.create_contactsheets()
+    edged_part.create_contactsheets()
     # for book_part in [orig_part, edged_part]:
     #     print('\n\n\n')
 

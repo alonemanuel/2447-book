@@ -1,3 +1,5 @@
+from reportlab.graphics import renderPDF
+from svglib.svglib import svg2rlg
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import cm, mm, inch
 import os
@@ -29,7 +31,6 @@ class Contactsheet:
 
         self.tag_height_mm = const.DEF_TAG_NUDGE
 
-    
     def _get_gapped_width(self):
         overall_gap_space = self._col_gap * (self._n_cols - 1)
         overall_left_space = self._page_w - overall_gap_space
@@ -60,11 +61,11 @@ class Contactsheet:
         if not image_cell.get_sizer_type() in {const.MEDIUM_CELLED, const.SINGLE_PAGE_CELLED, const.DOUBLE_PAGE_CELLED}:
             print(f'im path: {im_path}')
             self._draw_image(image=im_path,
-                            preserveAspectRatio=True,
-                            x=x,
-                            y=y,
-                            height=im_height,
-                            width=im_width)
+                             preserveAspectRatio=True,
+                             x=x,
+                             y=y,
+                             height=im_height,
+                             width=im_width)
         else:
             print('ENTERED CLAUYSE')
 
@@ -91,13 +92,22 @@ class Contactsheet:
     def _draw_image(self, image, preserveAspectRatio, x, y, height, width):
         page_x = self._get_page_x(x, width)
         page_y = self._get_page_y(y, height)
-        self._canvas.drawImage(image=image,
-                               preserveAspectRatio=preserveAspectRatio,
-                               x=page_x,
-                               y=page_y,
-                               height=height*mm,
-                               width=width*mm,
-                               anchor=const.DEF_CS_ANCHOR)
+
+        print(f'image: {image}')
+
+        if 'svg' in os.path.splitext(os.path.basename(image))[1]:
+            print(f'is svg')
+            drawing = svg2rlg(image)
+            renderPDF.draw(drawing, self._canvas, x=page_x,
+                           y=page_y)
+        else:
+            self._canvas.drawImage(image=image,
+                                   preserveAspectRatio=preserveAspectRatio,
+                                   x=page_x,
+                                   y=page_y,
+                                   height=height*mm,
+                                   width=width*mm,
+                                   anchor=const.DEF_CS_ANCHOR)
 
     def _update_next_pos(self):
         self._next_col += 1

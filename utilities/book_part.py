@@ -90,6 +90,7 @@ class BookPart:
                 input_basename=base_fn)
             cell_sizer = self._get_cell_sizer(base_fn)
 
+            print(f'processed fn: {processed_fn}')
             self._image_cells_list.append(
                 ImageCell(processed_fn, cell_sizer=cell_sizer))
 
