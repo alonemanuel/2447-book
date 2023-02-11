@@ -7,8 +7,8 @@ SINGLE_PAGE_CELLED = CellSizer(-1, -1)
 DOUBLE_PAGE_CELLED = CellSizer(-1, -1)
 
 
-INPUTS_PATH = os.path.join('..', 'inputs')
-OUTPUTS_PATH = os.path.join('..', 'outputs')
+INPUTS_PATH = os.path.join('inputs')
+OUTPUTS_PATH = os.path.join('outputs')
 FIVE_SAMPLES_PATH = os.path.join(INPUTS_PATH, '005_samples')
 FIFTEEN_SAMPLES_PATH = os.path.join(INPUTS_PATH, '015_samples')
 FIFTY_SAMPLES_PATH = os.path.join(INPUTS_PATH, '050_samples')
@@ -82,13 +82,16 @@ DOUBLE_SIZE_SN_LIST = [
 
 ]
 
-ALL_STILLS_PATH = os.path.join('..', '..', 'assets', 'orig_copy', 'stills')
+ASSETS_PATH = os.path.join('..','assets')
+
+ALL_STILLS_PATH = os.path.join(ASSETS_PATH, 'orig_copy', 'stills')
 RANDOM_SAMPLE_DIR = os.path.join(OUTPUTS_PATH, 'random_sample')
 
 
-MEDIUM_STILLS_PATH = os.path.join('..', '..', 'assets', 'medium_size_stills')
-SINGLE_PAGE_STILLS_PATH = os.path.join('..', '..', 'assets', 'single_page_stills')
-DOUBLE_PAGE_STILLS_PATH = os.path.join('..', '..', 'assets', 'double_page_stills')
+
+MEDIUM_STILLS_PATH = os.path.join(ASSETS_PATH, 'medium_size_stills')
+SINGLE_PAGE_STILLS_PATH = os.path.join(ASSETS_PATH, 'single_page_stills')
+DOUBLE_PAGE_STILLS_PATH = os.path.join(ASSETS_PATH, 'double_page_stills')
 
 GIFS_INPUT_DIR = os.path.join(INPUTS_PATH, 'gif_samples')
 GIFS_OUTPUT_DIR = os.path.join(OUTPUTS_PATH, 'gif_outputs')
@@ -101,8 +104,10 @@ GIF_CS_N_ROWS = 9
 
 
 META_PART_NAME = 'metadata'
-META_CS_N_ROWS = 12
-META_CS_N_COLS = 8
+META_CS_N_ROWS = 10
+META_CS_N_COLS = 7
 DEF_META_COL_GAP = 1
 DEF_META_ROW_GAP = 2
-DEF_PALETTE_SIZE = 2
+DEF_PALETTE_SIZE = 4
+
+DEF_COLOR_UNIQUE_THRESH = 20

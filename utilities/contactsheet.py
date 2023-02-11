@@ -95,7 +95,9 @@ class Contactsheet:
 
         print(f'image: {image}')
 
+
         if 'svg' in os.path.splitext(os.path.basename(image))[1]:
+            page_y = self._get_svg_page_y(y, height)
             print(f'is svg')
             drawing = svg2rlg(image)
             renderPDF.draw(drawing, self._canvas, x=page_x,
@@ -133,6 +135,9 @@ class Contactsheet:
 
     def _get_page_y(self, y, height):
         return (self._page_h - y - height)*mm
+    
+    def _get_svg_page_y(self, y, height):
+        return (self._page_h - y)*mm
 
     def _get_im_height(self, image_cell):
         return (image_cell.get_n_rows() * self._cell_h) - self.tag_height_mm

@@ -13,12 +13,12 @@ def main():
     # create_random_sample(files_dir_path=const.ALL_STILLS_PATH, dest_folder=const.RANDOM_SAMPLE_DIR,n_samples=3)
     # utilities.utils.save_gifs_to_frames()
     # create_gif_contactsheets()
-    # create_meta_contactsheets()
-    create_all_contactsheets()
+    create_meta_contactsheets()
+    # create_all_contactsheets()
 
 
 def create_meta_contactsheets():
-    meta_part = BookPart(raw_input_dir=const.FIVE_SAMPLES_PATH,
+    meta_part = BookPart(raw_input_dir=const.FIFTY_SAMPLES_PATH,
                          part_name=const.META_PART_NAME,
                          preprocessor_class=meta_preprocessor.MetaPreprocessor,
                          cs_n_rows=const.META_CS_N_ROWS,
