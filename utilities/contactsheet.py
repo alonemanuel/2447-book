@@ -10,14 +10,20 @@ import utilities.constants as const
 
 class Contactsheet:
 
-    def __init__(self, contactsheet_fn, n_rows, n_cols, page_w, page_h, row_gap, col_gap) -> None:
+    def __init__(self, contactsheet_fn, n_rows, n_cols, page_w, page_h, row_gap, col_gap, is_svg=False) -> None:
         print('Initing contactsheet...')
+
         self._n_images_placed = 0
         self._page_w = page_w
         self._page_h = page_h
 
         self._canvas = canvas.Canvas(filename=contactsheet_fn,
                                      pagesize=(self._page_w*mm, self._page_h*mm))
+
+        # if (is_svg):
+        #     self.init_as_svg_cs()
+        #     return
+
         self._n_rows = n_rows
         self._n_cols = n_cols
         self._row_gap = row_gap
@@ -25,6 +31,8 @@ class Contactsheet:
 
         self._cell_w = self._get_gapped_width()
         self._cell_h = self._get_gapped_height()
+
+        print(f'cell w: {self._cell_w}, cell h: {self._cell_h}')
 
         self._next_row = 0
         self._next_col = 0
@@ -43,7 +51,7 @@ class Contactsheet:
 
     def place_cell(self, image_cell):
         im_path = image_cell.get_image_path()
-        print(f'in cs impath: {im_path}')
+        # print(f'in cs impath: {im_path}')
         image_basename = os.path.basename(im_path)
         image_tag = os.path.splitext(image_basename)[0]
         # print(f'Placing cell {image_tag}...')
@@ -59,7 +67,7 @@ class Contactsheet:
             print(image_cell.get_sizer_type())
 
         if not image_cell.get_sizer_type() in {const.MEDIUM_CELLED, const.SINGLE_PAGE_CELLED, const.DOUBLE_PAGE_CELLED}:
-            print(f'im path: {im_path}')
+            # print(f'im path: {im_path}')
             self._draw_image(image=im_path,
                              preserveAspectRatio=True,
                              x=x,
@@ -90,15 +98,18 @@ class Contactsheet:
         # textobj = self._canvas.beginText(page_x, page_y)
 
     def _draw_image(self, image, preserveAspectRatio, x, y, height, width):
+        # if 'svg' in os.path.splitext(os.path.basename(image))[1]:
+        #     self.draw_svg()
+        #     return
         page_x = self._get_page_x(x, width)
         page_y = self._get_page_y(y, height)
 
-        print(f'image: {image}')
-
+        # print(f'image: {image}')
 
         if 'svg' in os.path.splitext(os.path.basename(image))[1]:
             page_y = self._get_svg_page_y(y, height)
-            print(f'is svg')
+            page_x = self._get_svg_page_x(x, width)
+            # print(f'is svg')
             drawing = svg2rlg(image)
             renderPDF.draw(drawing, self._canvas, x=page_x,
                            y=page_y)
@@ -123,6 +134,7 @@ class Contactsheet:
     def _get_x(self, col):
         image_offset = self._cell_w * col
         gap_offset = self._col_gap * col
+
         return image_offset + gap_offset
 
     def _get_y(self, row):
@@ -135,16 +147,28 @@ class Contactsheet:
 
     def _get_page_y(self, y, height):
         return (self._page_h - y - height)*mm
-    
+
     def _get_svg_page_y(self, y, height):
+        # return self._get_page_y(y, height)
         return (self._page_h - y)*mm
 
+    def _get_svg_page_x(self, x, width):
+        return self._get_page_x(x, width)
+        widths_offset = const.SVG_OUTPUT_W - width
+        return (self._page_w - x - width - 0.2) * mm
+
     def _get_im_height(self, image_cell):
-        return (image_cell.get_n_rows() * self._cell_h) - self.tag_height_mm
+
+        height = (image_cell.get_n_rows() * self._cell_h) - self.tag_height_mm
+        print(f'im height: {height}')
+        return height
+    
 
     def _get_im_width(self, image_cell):
 
-        return image_cell.get_n_cols() * self._cell_w
+        width=image_cell.get_n_cols() * self._cell_w
+        print(f'im width: {width}')
+        return width
 
     def save(self):
         self._canvas.save()

@@ -27,7 +27,8 @@ HIGH_SIGMA = 0.66
 
 ORIG_CS_N_ROWS = 9
 ORIG_CS_N_COLS = 6
-EDGED_CS_N_ROWS = 11
+
+EDGED_CS_N_ROWS = 10
 EDGED_CS_N_COLS = 7
 
 PAGE_W = 152
@@ -38,8 +39,8 @@ PAGE_GAP_MM = 2
 
 DIATYPE_FONT_NAME = 'ABCDiatype'
 DIATYPE_FONT_PATH = os.path.join(
-    'assets', 'fonts', 'ABCDiatype-Regular-Trial.ttf')
-DEF_FONT_TAG_SIZE = 7
+    'assets', 'fonts', 'PPEditorialNew-Regular.ttf')
+DEF_FONT_TAG_SIZE = 7.5
 DEF_TAG_GAP = 2.5
 DEF_TAG_NUDGE = 2.75
 
@@ -70,7 +71,7 @@ MED_SIZE_SN_LIST = [
 FULL_SIZE_SN_LIST = [
     '1501',
     '1031',
-'0230',
+    '0230',
 
 
 ]
@@ -82,11 +83,10 @@ DOUBLE_SIZE_SN_LIST = [
 
 ]
 
-ASSETS_PATH = os.path.join('..','assets')
+ASSETS_PATH = os.path.join('..', 'assets')
 
 ALL_STILLS_PATH = os.path.join(ASSETS_PATH, 'orig_copy', 'stills')
 RANDOM_SAMPLE_DIR = os.path.join(OUTPUTS_PATH, 'random_sample')
-
 
 
 MEDIUM_STILLS_PATH = os.path.join(ASSETS_PATH, 'medium_size_stills')
@@ -104,10 +104,13 @@ GIF_CS_N_ROWS = 9
 
 
 META_PART_NAME = 'metadata'
-META_CS_N_ROWS = 10
+META_CS_N_ROWS = 9
 META_CS_N_COLS = 7
-DEF_META_COL_GAP = 1
-DEF_META_ROW_GAP = 2
+DEF_META_COL_GAP = 3
+DEF_META_ROW_GAP = 3
 DEF_PALETTE_SIZE = 4
 
 DEF_COLOR_UNIQUE_THRESH = 20
+
+SVG_OUTPUT_W = 19.142857142857142
+SVG_OUTPUT_H = 22

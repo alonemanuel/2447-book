@@ -49,7 +49,7 @@ class MetaPreprocessor(Preprocessor):
         color_thief = MyColorThief(self._input_image)
         orig_palette = color_thief.get_palette(
             color_count=const.DEF_PALETTE_SIZE)[:3]
-        print(orig_palette)
+        # print(orig_palette)
         filtered_palette = color_thief.unique_colors(orig_palette, threshold=const.DEF_COLOR_UNIQUE_THRESH)
         return filtered_palette
 
@@ -81,7 +81,7 @@ class MetaPreprocessor(Preprocessor):
             os.makedirs(faces_dir, exist_ok=True)
             cv2.imwrite(face_abs_path, face)
             face_paths.append(face_abs_path)
-        return face_paths
+        return face_paths[:2]
 
     def extract_text(self):
         pass

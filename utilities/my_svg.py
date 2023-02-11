@@ -7,12 +7,15 @@ import os
 from functools import reduce
 from collections import namedtuple
 from PIL import Image
+from math import ceil, floor
 
 COLORBAR_W = 5
 COLORBAR_H = 10
 
-OUTPUT_W = 20
-OUTPUT_H = 20
+NEW_COLORBAR_H = 3
+
+OUTPUT_W = const.SVG_OUTPUT_W 
+OUTPUT_H = const.SVG_OUTPUT_H 
 
 TEXT_PADDING = 4
 TEXT_START_Y = COLORBAR_H + TEXT_PADDING
@@ -99,15 +102,15 @@ class MySVG(svgwrite.Drawing):
                 n_items = len(metadata_list.items)
                 item_h = 1 / n_items * item_abs_height
                 if metadata_list.type is MetaDataType.COLOR:
-                    print(f'subitem: {item}')
+                    # print(f'subitem: {item}')
                     # continue
                     self.new_add_colorbar(w=OUTPUT_W,
-                                          h=item_h,
+                                          h=NEW_COLORBAR_H,
                                           x=0,
-                                          y=curr_y,
+                                          y=int(curr_y),
                                           color=f'rgb{item}')
                 elif metadata_list.type is MetaDataType.FACE:
-                    print(f'face subitem: {item}')
+                    # print(f'face subitem: {item}')
                     self.new_add_image(w=OUTPUT_W,
                                           h=item_h,
                                           x=0,
@@ -148,7 +151,7 @@ class MySVG(svgwrite.Drawing):
         # image.save()
         with Image.open(image_abs_path) as im:
             orig_size_w, orig_size_h = im.size
-            new_size_h = orig_size_h * (h / w)
+            new_size_h = floor(orig_size_h * (h / w))
             stretched_im = im.resize((int(orig_size_w), int(new_size_h)), Image.NEAREST)
         with open(image_abs_path, "wb") as f:
             stretched_im.save(f, "JPEG")

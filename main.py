@@ -18,7 +18,7 @@ def main():
 
 
 def create_meta_contactsheets():
-    meta_part = BookPart(raw_input_dir=const.FIFTY_SAMPLES_PATH,
+    meta_part = BookPart(raw_input_dir=const.FIFTEEN_SAMPLES_PATH,
                          part_name=const.META_PART_NAME,
                          preprocessor_class=meta_preprocessor.MetaPreprocessor,
                          cs_n_rows=const.META_CS_N_ROWS,
