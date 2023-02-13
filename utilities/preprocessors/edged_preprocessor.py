@@ -14,11 +14,20 @@ class EdgedPreprocessor(Preprocessor):
         super().preprocess(input_basename=input_basename)
         input_fn = os.path.join(self.input_dir, input_basename)
         output_fn = os.path.join(self.output_dir, input_basename)
+        if os.path.isfile(output_fn):
+            print(f'File os.p{os.path.basename(output_fn)} exists')
+            return output_fn
+        os.makedirs(os.path.dirname(output_fn), exist_ok=True)
+        
+        print(f'got to prep!!!!!!!!!')
 
         img = self._get_image(input_fn)
+        print(f'got image: {input_fn}')
         edged = self._get_edged_image(image=img,
                                       sigma=999)
 
+
+        print(f'outputfn = {output_fn}')
         cv2.imwrite(filename=output_fn, img=edged)
         return output_fn
 

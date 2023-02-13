@@ -10,9 +10,10 @@ import utilities.constants as const
 
 class Contactsheet:
 
-    def __init__(self, contactsheet_fn, n_rows, n_cols, page_w, page_h, row_gap, col_gap, is_svg=False) -> None:
+    def __init__(self, contactsheet_fn, n_rows, n_cols, page_w, page_h, row_gap, col_gap,special_images_list , is_svg=False) -> None:
         print('Initing contactsheet...')
 
+        self._special_images_list = special_images_list
         self._n_images_placed = 0
         self._page_w = page_w
         self._page_h = page_h
@@ -32,12 +33,16 @@ class Contactsheet:
         self._cell_w = self._get_gapped_width()
         self._cell_h = self._get_gapped_height()
 
-        print(f'cell w: {self._cell_w}, cell h: {self._cell_h}')
+        # print(f'cell w: {self._cell_w}, cell h: {self._cell_h}')
 
         self._next_row = 0
         self._next_col = 0
 
         self.tag_height_mm = const.DEF_TAG_NUDGE
+
+    def set_next_row_col(self, row, col):
+        self._next_row = row
+        self._next_col = col
 
     def _get_gapped_width(self):
         overall_gap_space = self._col_gap * (self._n_cols - 1)
@@ -49,11 +54,10 @@ class Contactsheet:
         overall_left_space = self._page_h - overall_gap_space
         return overall_left_space / self._n_rows
 
-    def place_cell(self, image_cell):
+    def place_cell(self, image_cell, is_batched=False):
         im_path = image_cell.get_image_path()
         # print(f'in cs impath: {im_path}')
-        image_basename = os.path.basename(im_path)
-        image_tag = os.path.splitext(image_basename)[0]
+        image_tag = image_cell.get_image_tag()
         # print(f'Placing cell {image_tag}...')
 
         x = self._get_x(self._next_col)
@@ -62,25 +66,23 @@ class Contactsheet:
         im_height = self._get_im_height(image_cell)
         im_width = self._get_im_width(image_cell)
 
-        if image_basename == '0049.png':
-            print('EBRRRRRRRRRRRRRRRRRR')
-            print(image_cell.get_sizer_type())
-
-        if not image_cell.get_sizer_type() in {const.MEDIUM_CELLED, const.SINGLE_PAGE_CELLED, const.DOUBLE_PAGE_CELLED}:
+        # if not image_cell.get_sizer_type() in {const.MEDIUM_CELLED, const.SINGLE_PAGE_CELLED, const.DOUBLE_PAGE_CELLED}:
             # print(f'im path: {im_path}')
-            self._draw_image(image=im_path,
-                             preserveAspectRatio=True,
-                             x=x,
-                             y=y,
-                             height=im_height,
-                             width=im_width)
-        else:
-            print('ENTERED CLAUYSE')
+        self._draw_image(image=im_path,
+                            preserveAspectRatio=True,
+                            x=x,
+                            y=y,
+                            height=im_height,
+                            width=im_width)
+        # else:
+        #     print('ENTERED CLAUYSE')
 
-        self._draw_tagline(tag=image_tag,
-                           row=self._next_row,
-                           col=self._next_col,
-                           im_height=im_height)
+        if not is_batched or ('_0' in image_tag):
+            image_tag = image_tag.replace('_0', '')
+            self._draw_tagline(tag=image_tag,
+                            row=self._next_row,
+                            col=self._next_col,
+                            im_height=im_height)
 
         self._update_next_pos()
 
@@ -160,14 +162,12 @@ class Contactsheet:
     def _get_im_height(self, image_cell):
 
         height = (image_cell.get_n_rows() * self._cell_h) - self.tag_height_mm
-        print(f'im height: {height}')
         return height
     
 
     def _get_im_width(self, image_cell):
 
         width=image_cell.get_n_cols() * self._cell_w
-        print(f'im width: {width}')
         return width
 
     def save(self):

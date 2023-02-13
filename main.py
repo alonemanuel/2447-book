@@ -13,9 +13,25 @@ def main():
     # create_random_sample(files_dir_path=const.ALL_STILLS_PATH, dest_folder=const.RANDOM_SAMPLE_DIR,n_samples=3)
     # utilities.utils.save_gifs_to_frames()
     # create_gif_contactsheets()
-    create_meta_contactsheets()
+    # create_meta_contactsheets()
     # create_all_contactsheets()
+    create_orig_contactsheets()
+    # create_edged_contactsheets()
+    # create_edged_gifs()
 
+
+def create_orig_contactsheets():
+    orig_part = BookPart(raw_input_dir=const.FIFTEEN_SAMPLES_PATH,
+                         part_name=const.ORIG_PART_NAME,
+                         preprocessor_class=orig_preprocessor.OrigPreprocessor,
+                         cs_n_rows=const.ORIG_CS_N_ROWS,
+                         cs_n_cols= const.ORIG_CS_N_COLS,
+                         row_gap=const.PAGE_GAP_MM,
+                         col_gap=const.PAGE_GAP_MM,
+                         is_batched=False,
+                         image_limit=5
+                         )
+    orig_part.create_contactsheets(image_limit=3000)
 
 def create_meta_contactsheets():
     meta_part = BookPart(raw_input_dir=const.FIFTEEN_SAMPLES_PATH,
@@ -39,12 +55,54 @@ def create_gif_contactsheets():
                          cs_n_cols=const.GIF_CS_N_COLS,
                          row_gap=const.DEF_GIF_ROW_GAP,
                          col_gap=const.DEF_GIF_COL_GAP,
-                         is_batched=True
+                         is_batched=True, 
                          )
 
-    gifs_part.create_contactsheets()
+
+    gifs_part.create_contactsheets(image_limit=3000, row_start=4,col_start=3)
+
+def create_edged_gifs():
+    gifs_part = BookPart(raw_input_dir=const.GIFS_BATCHED_INPUT_DIR,
+                         part_name=const.GIF_PART_NAME,
+                         preprocessor_class=edged_preprocessor.EdgedPreprocessor,
+                         cs_n_rows=const.GIF_CS_N_ROWS,
+                         cs_n_cols=const.GIF_CS_N_COLS,
+                         row_gap=const.DEF_GIF_ROW_GAP,
+                         col_gap=const.DEF_GIF_COL_GAP,
+                         is_batched=True, 
+                         )
+
+    # gifs_part.preprocess_inputs()
 
 
+    gifs_part.create_contactsheets(image_limit=2, row_start=4,col_start=3)
+
+
+
+def create_edged_contactsheets():
+    print(f'Creating all contactsheets...')
+    # orig_part = BookPart(raw_input_dir=const.ALL_STILLS_PATH,
+    #                      part_name=const.ORIG_PART_NAME,
+    #                      preprocessor_class=orig_preprocessor.OrigPreprocessor,
+    #                      cs_n_rows=const.ORIG_CS_N_ROWS,
+    #                      cs_n_cols=const.ORIG_CS_N_COLS
+    #                      )
+    edged_part = BookPart(raw_input_dir=const.ALL_STILLS_PATH,
+                          part_name=const.EDGED_PART_NAME,
+                          preprocessor_class=edged_preprocessor.EdgedPreprocessor,
+                          cs_n_rows=const.EDGED_CS_N_ROWS,
+                          cs_n_cols=const.EDGED_CS_N_COLS,
+                          row_gap=const.DEF_GIF_ROW_GAP,
+                          col_gap=const.DEF_GIF_COL_GAP,
+                          is_batched=False, image_limit=3000)
+
+    # orig_part.preprocess_inputs()
+    edged_part.preprocess_inputs()
+
+    edged_part.create_contactsheets(image_limit=3000)
+    # edged_part.create_contactsheets(image_limit=80)
+    # for book_part in [orig_part, edged_part]:
+    #     print('\n\n\n')
 def create_all_contactsheets():
     print(f'Creating all contactsheets...')
     # orig_part = BookPart(raw_input_dir=const.ALL_STILLS_PATH,

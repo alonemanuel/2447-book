@@ -14,6 +14,8 @@ FIFTEEN_SAMPLES_PATH = os.path.join(INPUTS_PATH, '015_samples')
 FIFTY_SAMPLES_PATH = os.path.join(INPUTS_PATH, '050_samples')
 HUNDRED_SAMPLES_PATH = os.path.join(INPUTS_PATH, '100_samples')
 
+PEOPLE_FEEDBACK_SAMPLES = os.path.join('..', 'assets', 'people_sample')
+
 ASSETS_TYPE = 'assets'
 CONTACTSHEETS_TYPE = 'contactsheets'
 
@@ -28,8 +30,8 @@ HIGH_SIGMA = 0.66
 ORIG_CS_N_ROWS = 9
 ORIG_CS_N_COLS = 6
 
-EDGED_CS_N_ROWS = 10
-EDGED_CS_N_COLS = 7
+EDGED_CS_N_ROWS = 9
+EDGED_CS_N_COLS = 6
 
 PAGE_W = 152
 PAGE_H = 252
@@ -41,8 +43,9 @@ DIATYPE_FONT_NAME = 'ABCDiatype'
 DIATYPE_FONT_PATH = os.path.join(
     'assets', 'fonts', 'PPEditorialNew-Regular.ttf')
 DEF_FONT_TAG_SIZE = 7.5
-DEF_TAG_GAP = 2.5
-DEF_TAG_NUDGE = 2.75
+DEF_TAG_GAP = 2.8
+# DEF_TAG_GAP = 2.5
+DEF_TAG_NUDGE = 3.2
 
 
 DEF_CS_ANCHOR = 's'
@@ -96,16 +99,17 @@ DOUBLE_PAGE_STILLS_PATH = os.path.join(ASSETS_PATH, 'double_page_stills')
 GIFS_INPUT_DIR = os.path.join(INPUTS_PATH, 'gif_samples')
 GIFS_OUTPUT_DIR = os.path.join(OUTPUTS_PATH, 'gif_outputs')
 GIFS_BATCHED_INPUT_DIR = os.path.join(INPUTS_PATH, 'gif_batch_samples')
-N_GIFS_TO_SAVE = 5
-DEF_GIF_COL_GAP = 1
+GIFS_BATCHED_INPUT_DIR = os.path.join(INPUTS_PATH, 'gif_batch_samples')
+N_GIFS_TO_SAVE = 3
+DEF_GIF_COL_GAP = 0
 DEF_GIF_ROW_GAP = 3
-GIF_CS_N_COLS = 5
-GIF_CS_N_ROWS = 9
+GIF_CS_N_COLS = 6
+GIF_CS_N_ROWS = 10
 
 
 META_PART_NAME = 'metadata'
-META_CS_N_ROWS = 9
-META_CS_N_COLS = 7
+META_CS_N_ROWS = 10
+META_CS_N_COLS = 5
 DEF_META_COL_GAP = 3
 DEF_META_ROW_GAP = 3
 DEF_PALETTE_SIZE = 4

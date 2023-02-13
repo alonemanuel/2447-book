@@ -8,13 +8,15 @@ from utilities.preprocessors.preprocessor import Preprocessor
 
 class BookPart:
     def __init__(self, raw_input_dir, part_name, preprocessor_class, cs_n_rows,
-                 cs_n_cols, row_gap, col_gap, is_batched=False) -> None:
+                 cs_n_cols, row_gap, col_gap, is_batched=False, image_limit=3000) -> None:
         print(f'Initing book part: {part_name}')
         self._raw_input_dir = raw_input_dir
         self.part_name = part_name
         self._assets_dir_name = None
         self._contactsheets_dir_name = None
 
+        self._image_limit = image_limit
+        
         self._is_batched = is_batched
 
         self._medium_sized = []
@@ -24,7 +26,7 @@ class BookPart:
         self._row_gap = row_gap
         self._col_gap = col_gap
 
-        self._init_special_images()
+        # self._init_special_images()
 
         self._image_cells_list = []
 
@@ -85,7 +87,13 @@ class BookPart:
 
     def preprocess_inputs(self):
         print(f'Preprocessing inputs for {self.part_name}...')
-        for base_fn in sorted(os.listdir(self._raw_input_dir)):
+        if self._is_batched:
+            self.preprocess_batched()
+            return
+        
+        for i, base_fn in enumerate(sorted(os.listdir(self._raw_input_dir))):
+            if i >= self._image_limit:
+                return
             processed_fn = self._preprocess_image(
                 input_basename=base_fn)
             cell_sizer = self._get_cell_sizer(base_fn)
@@ -93,6 +101,27 @@ class BookPart:
             print(f'processed fn: {processed_fn}')
             self._image_cells_list.append(
                 ImageCell(processed_fn, cell_sizer=cell_sizer))
+
+    def preprocess_batched(self):
+        image_count = 0
+        for i, batch_dir in enumerate(sorted(os.listdir(self._raw_input_dir))):
+            if image_count >= self._image_limit:
+                return
+            batch_dir_abs = os.path.join(self._raw_input_dir, batch_dir)
+            for j, file_name in enumerate(sorted(os.listdir(batch_dir_abs))):
+                fn_abs = os.path.join(batch_dir, file_name)
+                print(f'working on: {fn_abs}')
+                processed_fn = self._preprocess_image(
+                    input_basename=fn_abs)
+                # cell_sizer = self._get_cell_sizer(batch_dir)
+                print(f'pro fn: {processed_fn}')
+                
+                self._image_cells_list.append(
+                    ImageCell(processed_fn, cell_sizer=const.SINGLE_CELLED))
+
+
+
+
 
     def _get_cell_sizer(self, base_fn):
         cell_sizer = const.SINGLE_CELLED
@@ -129,14 +158,14 @@ class BookPart:
                     new_list.append(
                         ImageCell(fn_path, cell_sizer=cell_sizer))
 
-    def create_batched_contactsheets(self):
+    def create_batched_contactsheets(self, row_start, col_start):
         self._init_batched_image_cells()
-        self._cs_manager.create_batched_contactsheets()
+        self._cs_manager.create_batched_contactsheets(row_start=row_start, col_start=col_start)
 
-    def create_contactsheets(self):
+    def create_contactsheets(self, image_limit, row_start=0, col_start=0):
         if self._is_batched:
-            self.create_batched_contactsheets()
+            self.create_batched_contactsheets(row_start, col_start)
             return
         if not self._image_cells_list:
             self._init_image_cells()
-        self._cs_manager.create_contactsheets()
+        self._cs_manager.create_contactsheets(image_limit=image_limit)
