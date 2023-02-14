@@ -100,7 +100,7 @@ class MySVG(svgwrite.Drawing):
             subitem_h = item_abs_height / len(metadata_list)
             for item in metadata_list.items:
                 n_items = len(metadata_list.items)
-                item_h = 1 / n_items * item_abs_height
+                item_h = 1 / n_items * subitem_h
                 if metadata_list.type is MetaDataType.COLOR:
                     # print(f'subitem: {item}')
                     # continue
@@ -109,21 +109,22 @@ class MySVG(svgwrite.Drawing):
                                           x=0,
                                           y=int(curr_y),
                                           color=f'rgb{item}')
+                    curr_y += NEW_COLORBAR_H
                 elif metadata_list.type is MetaDataType.FACE:
                     # print(f'face subitem: {item}')
                     self.new_add_image(w=OUTPUT_W,
-                                          h=item_h,
+                                          h=item_h  * len(metadata_list),
                                           x=0,
                                           y=curr_y,
                                           image_path=item)
+                    curr_y += item_h
                 elif metadata_list.type is MetaDataType.TEXT:
                     pass
 
-                curr_y += item_h
 
 
     def new_add_colorbar(self, w, h, color, x, y):
-        print(f'color: {color}')
+        # print(f'color: {color}')
         self.add(self.rect(insert=(x*mm, y*mm),
                            size=(w*mm, h*mm),
                            fill=color,

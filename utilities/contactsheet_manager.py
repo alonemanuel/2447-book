@@ -72,7 +72,7 @@ class ContactsheetManager:
 
     def create_contactsheets(self, image_limit):
         print(f'\nCreating contactsheets...')
-        print(f'special images: {self._special_images_list}')
+        # print(f'special images: {self._special_images_list}')
 
         image_counter = 0
         page_counter = 0

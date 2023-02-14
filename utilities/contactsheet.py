@@ -55,6 +55,8 @@ class Contactsheet:
         return overall_left_space / self._n_rows
 
     def place_cell(self, image_cell, is_batched=False):
+
+
         im_path = image_cell.get_image_path()
         # print(f'in cs impath: {im_path}')
         image_tag = image_cell.get_image_tag()
@@ -87,6 +89,8 @@ class Contactsheet:
         self._update_next_pos()
 
     def _draw_tagline(self, tag, row, col, im_height):
+
+
         tag_x = (self._get_x(col) + self._cell_w/2)
         tag_y = (self._get_y(row) + im_height) + const.DEF_TAG_GAP
         page_x = self._get_page_x(tag_x, 0)
@@ -99,16 +103,24 @@ class Contactsheet:
 
         # textobj = self._canvas.beginText(page_x, page_y)
 
+
+
     def _draw_image(self, image, preserveAspectRatio, x, y, height, width):
         # if 'svg' in os.path.splitext(os.path.basename(image))[1]:
         #     self.draw_svg()
         #     return
+
         page_x = self._get_page_x(x, width)
         page_y = self._get_page_y(y, height)
 
         # print(f'image: {image}')
 
         if 'svg' in os.path.splitext(os.path.basename(image))[1]:
+            row=self._next_row
+            col=self._next_col
+
+            new_y = (self._get_y(row)) + const.DEF_TAG_GAP
+            new_y = (self._get_y(row)) + height 
             page_y = self._get_svg_page_y(y, height)
             page_x = self._get_svg_page_x(x, width)
             # print(f'is svg')

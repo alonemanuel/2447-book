@@ -13,13 +13,13 @@ def main():
     # create_random_sample(files_dir_path=const.ALL_STILLS_PATH, dest_folder=const.RANDOM_SAMPLE_DIR,n_samples=3)
     # utilities.utils.save_gifs_to_frames()
     # create_gif_contactsheets()
-    # create_meta_contactsheets()
+    create_meta_contactsheets()
     # create_all_contactsheets()
     # create_orig_contactsheets()
     # create_edged_contactsheets()
     # create_edged_gifs()
-    resize_edges(2.5)
-    create_edges_samples()
+    # resize_edges(2.5)
+    # create_edges_samples()
 
 
 def create_orig_contactsheets():
@@ -36,7 +36,7 @@ def create_orig_contactsheets():
     orig_part.create_contactsheets(image_limit=3000)
 
 def create_meta_contactsheets():
-    meta_part = BookPart(raw_input_dir=const.FIFTEEN_SAMPLES_PATH,
+    meta_part = BookPart(raw_input_dir=const.ALL_STILLS_PATH,
                          part_name=const.META_PART_NAME,
                          preprocessor_class=meta_preprocessor.MetaPreprocessor,
                          cs_n_rows=const.META_CS_N_ROWS,
@@ -46,7 +46,7 @@ def create_meta_contactsheets():
                          is_batched=False
                          )
     meta_part.preprocess_inputs()
-    meta_part.create_contactsheets()
+    meta_part.create_contactsheets(image_limit=3000)
 
 
 def create_gif_contactsheets():

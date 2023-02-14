@@ -21,6 +21,10 @@ class MetaPreprocessor(Preprocessor):
 
         self._input_fn = os.path.join(self.input_dir, input_basename)
         self._output_fn = os.path.join(self.output_dir, self.get_output_fn())
+        if os.path.isfile(self._output_fn):
+            print(f'File os.p{os.path.basename(self._output_fn)} exists')
+            return self._output_fn
+
         self._input_image = Image.open(self._input_fn)
 
         self._palette = self.extract_palette()
@@ -68,7 +72,7 @@ class MetaPreprocessor(Preprocessor):
 
         # Detect faces in the grayscale image
         faces = face_cascade.detectMultiScale(gray, 1.1, 4)
-        print(f'Found {len(faces)} faces')
+        # print(f'Found {len(faces)} faces')
 
         # Loop over the faces and save each face to a separate image file
         face_paths = []
