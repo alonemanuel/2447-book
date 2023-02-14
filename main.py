@@ -14,12 +14,15 @@ def main():
     # utilities.utils.save_gifs_to_frames()
     # create_gif_contactsheets()
     create_meta_contactsheets()
+    # extract_meta_
     # create_all_contactsheets()
     # create_orig_contactsheets()
     # create_edged_contactsheets()
     # create_edged_gifs()
     # resize_edges(2.5)
     # create_edges_samples()
+
+    #
 
 
 def create_orig_contactsheets():
@@ -33,7 +36,7 @@ def create_orig_contactsheets():
                          is_batched=False,
                          image_limit=5
                          )
-    orig_part.create_contactsheets(image_limit=3000)
+    orig_part.create_contactsheets(image_limit=15)
 
 def create_meta_contactsheets():
     meta_part = BookPart(raw_input_dir=const.ALL_STILLS_PATH,
@@ -45,8 +48,12 @@ def create_meta_contactsheets():
                          col_gap=const.DEF_META_COL_GAP,
                          is_batched=False
                          )
-    meta_part.preprocess_inputs()
-    meta_part.create_contactsheets(image_limit=3000)
+    # meta_part.preprocess_inputs()
+
+    # create_empty_meta_assets()
+    meta_part.create_contactsheets(image_limit=40)
+# def create_empty_meta_assets():
+#     for fn in
 
 
 def create_gif_contactsheets():

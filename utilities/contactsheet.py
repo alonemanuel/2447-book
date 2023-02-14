@@ -76,6 +76,12 @@ class Contactsheet:
                             y=y,
                             height=im_height,
                             width=im_width)
+        
+        self._draw_ocr(image_tag=image_tag,
+                            x=x,
+                            y=y,
+                            height=im_height,
+                            width=im_width)
         # else:
         #     print('ENTERED CLAUYSE')
 
@@ -97,11 +103,117 @@ class Contactsheet:
         page_y = self._get_page_y(tag_y, 0)
 
         self._canvas.saveState()
-        self._canvas.setFont(const.DIATYPE_FONT_NAME, const.DEF_FONT_TAG_SIZE)
+        self._canvas.setFont(const.EDITORIAL_FONT_NAME, const.DEF_FONT_TAG_SIZE)
+        # self._canvas.setFont(const.EDITORIAL_FONT_PATH, const.DEF_FONT_TAG_SIZE)
         self._canvas.drawCentredString(page_x, page_y, tag)
         self._canvas.restoreState()
 
         # textobj = self._canvas.beginText(page_x, page_y)
+
+    def _draw_ocr(self, image_tag, x, y, height, width):
+        # if 'svg' in os.path.splitext(os.path.basename(image))[1]:
+        #     self.draw_svg()
+        #     return
+
+        page_x = self._get_page_x(x, width)
+        page_y = self._get_page_y(y, height)
+
+        # print(f'image: {image}')
+        from reportlab.lib.pagesizes import letter
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        from reportlab.lib.units import inch
+        from reportlab.pdfgen import canvas
+        from reportlab.lib.colors import Color, black, blue, red
+        from reportlab.lib.enums import TA_CENTER
+        from reportlab.platypus.flowables import TopPadder
+
+
+
+        from reportlab.platypus import Frame, Paragraph
+
+        # Define the size and position of the text box
+        # x = 1 * inch
+        # y = 1 * inch
+        # width = 4 * inch
+        # height = 3 * inch
+
+        # Create a canvas object and set the page size to letter
+        # c = canvas.Canvas("example.pdf", pagesize=letter)
+        text = None
+        # Create a frame object with the specified size and position
+        txt_fn = f'{image_tag}.txt'
+        txt_fn =os.path.join(const.META_TEXTS_PATH, txt_fn)
+        
+        if os.path.exists(txt_fn):
+            print(f'found text!')
+            with open(txt_fn, 'r') as f:
+                text = f.read()
+                print(f'text is: {text}')
+                
+
+        if not text:
+            return
+
+        frame = Frame(x1=page_x, y1=page_y,height=height*mm,
+                                   width=width*mm, showBoundary=0,
+                                   topPadding=0,
+                                   leftPadding=0,
+                                   rightPadding=0,
+                                   bottomPadding=4,
+                                   )
+
+        # Create a sample style sheet for the paragraph object
+        styles = getSampleStyleSheet()
+
+        fiddle_style = ParagraphStyle('fiddle_style',
+                        #    fontName=const.DIATYPE_FONT_NAME,
+                           fontName=const.YAIR_FONT_NAME,
+                           fontSize=8,
+                           leading=8,
+                           textColor = Color(0,0,0,1),
+                           align='BOTTOM',
+                           vAlign='BOTTOM',
+                           alignment=TA_CENTER
+                           )
+
+
+        # Create a paragraph object with the desired text and formatting
+
+        # text = "hello nice to meet you hi"
+
+        # p = Paragraph(text, styles["Normal"])
+        p = TopPadder(Paragraph(text, fiddle_style))
+
+
+
+        # Add the paragraph to the frame
+        frame.addFromList([p], self._canvas)
+
+        # Save the PDF document
+        # self._canvas.save()
+
+
+
+        # if 'svg' in os.path.splitext(os.path.basename(image))[1]:
+        #     row=self._next_row
+        #     col=self._next_col
+
+        #     new_y = (self._get_y(row)) + const.DEF_TAG_GAP
+        #     new_y = (self._get_y(row)) + height 
+        #     page_y = self._get_svg_page_y(y, height)
+        #     page_x = self._get_svg_page_x(x, width)
+        #     # print(f'is svg')
+        #     drawing = svg2rlg(image)
+        #     renderPDF.draw(drawing, self._canvas, x=page_x,
+        #                    y=page_y)
+        # else:
+        #     self._canvas.drawImage(image=image,
+        #                            preserveAspectRatio=preserveAspectRatio,
+        #                            x=page_x,
+        #                            y=page_y,
+        #                            height=height*mm,
+        #                            width=width*mm,
+        #                            anchor=const.DEF_CS_ANCHOR)
 
 
 

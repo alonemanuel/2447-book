@@ -31,7 +31,11 @@ class ContactsheetManager:
 
     def _init_font(self):
         pdfmetrics.registerFont(
+            TTFont(const.EDITORIAL_FONT_NAME, const.EDITORIAL_FONT_PATH))
+        pdfmetrics.registerFont(
             TTFont(const.DIATYPE_FONT_NAME, const.DIATYPE_FONT_PATH))
+        pdfmetrics.registerFont(
+            TTFont(const.YAIR_FONT_NAME, const.YAIR_FONT_PATH))
 
     def create_batched_contactsheets(self, row_start, col_start):
         print(f'\nCreating contactsheets...')

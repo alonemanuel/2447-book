@@ -42,8 +42,14 @@ PAGE_GAP_MM = 2
 # PAGE_ROW_GAP = 2
 
 DIATYPE_FONT_NAME = 'ABCDiatype'
-DIATYPE_FONT_PATH = os.path.join(
+DIATYPE_FONT_PATH = os.path.join(    'assets', 'fonts', 'ABCDiatype-Regular-Trial.ttf')
+EDITORIAL_FONT_NAME = 'PPEditorial'
+EDITORIAL_FONT_PATH = os.path.join(
     'assets', 'fonts', 'PPEditorialNew-Regular.ttf')
+    
+YAIR_FONT_NAME = 'Yair'
+YAIR_FONT_PATH = os.path.join(
+    'assets', 'fonts', 'NarkissYairMono-Regular-TRIAL.ttf')
 DEF_FONT_TAG_SIZE = 7.5
 DEF_TAG_GAP = 2.8
 # DEF_TAG_GAP = 2.5
@@ -120,3 +126,10 @@ DEF_COLOR_UNIQUE_THRESH = 20
 
 SVG_OUTPUT_W = 19.142857142857142
 SVG_OUTPUT_H = 22
+
+
+NN_MODELS_DIR = os.path.join('nn_models')
+DEPLOY_FN = os.path.join(NN_MODELS_DIR, 'deploy.prototxt')
+CAFFE_MODEL = os.path.join(NN_MODELS_DIR, 'res10_300x300_ssd_iter_140000_fp16.caffemodel')
+
+META_TEXTS_PATH = os.path.join(OUTPUTS_PATH, META_PART_NAME, 'texts')
