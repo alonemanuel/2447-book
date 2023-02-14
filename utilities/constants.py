@@ -15,6 +15,8 @@ FIFTY_SAMPLES_PATH = os.path.join(INPUTS_PATH, '050_samples')
 HUNDRED_SAMPLES_PATH = os.path.join(INPUTS_PATH, '100_samples')
 
 PEOPLE_FEEDBACK_SAMPLES = os.path.join('..', 'assets', 'people_sample')
+BIGER_PEOPLE_FEEDBACK_SAMPLES = os.path.join('..', 'assets', 'bigger_people_samples')
+BIGER_EDGES_PEOPLE_FEEDBACK_SAMPLES = os.path.join('..', 'assets', 'bigger_edges_people_samples')
 
 ASSETS_TYPE = 'assets'
 CONTACTSHEETS_TYPE = 'contactsheets'

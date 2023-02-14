@@ -15,9 +15,11 @@ def main():
     # create_gif_contactsheets()
     # create_meta_contactsheets()
     # create_all_contactsheets()
-    create_orig_contactsheets()
+    # create_orig_contactsheets()
     # create_edged_contactsheets()
     # create_edged_gifs()
+    resize_edges(2.5)
+    create_edges_samples()
 
 
 def create_orig_contactsheets():
@@ -77,6 +79,43 @@ def create_edged_gifs():
 
     gifs_part.create_contactsheets(image_limit=2, row_start=4,col_start=3)
 
+def create_edges_samples():
+    print(f'creating edges...')
+    input_dir = const.BIGER_PEOPLE_FEEDBACK_SAMPLES
+    output_dir = const.BIGER_EDGES_PEOPLE_FEEDBACK_SAMPLES
+    edger = edged_preprocessor.EdgedPreprocessor(input_dir=input_dir, output_dir=output_dir)
+    for im in os.listdir(input_dir):
+        edger.preprocess(im, big_lines=True)
+
+
+def resize_edges(resize_factor =3):
+    print(f'resizing edges...')
+    input_dir = const.PEOPLE_FEEDBACK_SAMPLES 
+    output_dir = const.BIGER_PEOPLE_FEEDBACK_SAMPLES
+    from PIL import Image
+
+
+    INPUT_DIR = input_dir
+    OUTPUT_DIR = output_dir
+
+    # Loop through all files in the input directory
+    for filename in os.listdir(INPUT_DIR):
+        # Open the image
+        img = Image.open(os.path.join(INPUT_DIR, filename))
+
+        # Get the current size of the image
+        width, height = img.size
+
+        # Calculate the new size
+        new_width = int(width * resize_factor)
+        new_height = int(height * resize_factor)
+
+        # Resize the image
+        img = img.resize((new_width, new_height), Image.ANTIALIAS)
+
+        # Save the resized image to the output directory
+        img.save(os.path.join(OUTPUT_DIR, filename))
+
 
 
 def create_edged_contactsheets():
@@ -97,7 +136,7 @@ def create_edged_contactsheets():
                           is_batched=False, image_limit=3000)
 
     # orig_part.preprocess_inputs()
-    edged_part.preprocess_inputs()
+    # edged_part.preprocess_inputs()
 
     edged_part.create_contactsheets(image_limit=3000)
     # edged_part.create_contactsheets(image_limit=80)
